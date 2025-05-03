@@ -1,8 +1,8 @@
 services:
   backends:
-    image: 'gestiondigitalisation'
+    image: 'gestionNote'
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/volobe
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/gesstionNote
       - SPRING_DATASOURCE_USERNAME=bony
       - SPRING_DATASOURCE_PASSWORD=33rthk
     ports:
@@ -12,7 +12,7 @@ services:
   postgres:
     image: 'postgres:latest'
     environment:
-      - POSTGRES_DB=volobe
+      - POSTGRES_DB=gestionNote
       - POSTGRES_USER=bony
       - POSTGRES_PASSWORD=33rthk
     ports:
