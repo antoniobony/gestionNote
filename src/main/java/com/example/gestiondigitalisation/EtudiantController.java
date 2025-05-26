@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/etudiants")
+@RequestMapping("/api/etudiants")
 @RequiredArgsConstructor
 public class EtudiantController {
     @Valid
@@ -130,12 +130,7 @@ public class EtudiantController {
     public  ResponseEntity<Map<String,Object>> createEtudiant(@RequestBody @Valid EtudiantDto etudiant) {
         Map<String,Object> response = new HashMap<>();
         try {
-            Etudiant etudiant1  = Etudiant.builder()
-                    .moyenne(etudiant.getMoyenne())
-                    .nom(etudiant.getNom())
-                    .build();
-
-            response.put("etudiant",etudiantService.create(etudiant1));
+            response.put("etudiant",etudiantService.create(etudiant));
             response.put("code",HttpStatus.CREATED.value());
             return new ResponseEntity<>(response, HttpStatus.CREATED);
 
@@ -150,11 +145,7 @@ public class EtudiantController {
     public ResponseEntity<Map<String,Object>> updateEtudiantById(@PathVariable Long id, @RequestBody @Valid EtudiantDto etudiant) {
         Map<String,Object> response = new HashMap<>();
             try {
-                Etudiant etudiant1 = Etudiant.builder().
-                    nom(etudiant.getNom()).
-                    moyenne(etudiant.getMoyenne()).build();
-
-                response.put("etudiant",etudiantService.updateEtudiant((etudiant1),id));
+                response.put("etudiant",etudiantService.updateEtudiant((etudiant),id));
                 response.put("code",HttpStatus.OK.value());
 
                 return new ResponseEntity<>(response,HttpStatus.OK) ;
