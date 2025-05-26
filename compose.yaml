@@ -1,8 +1,8 @@
 services:
   backends:
-    image: 'gestionNote'
+    image: "gestionetudiant"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/gesstionNote
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/gestionNote
       - SPRING_DATASOURCE_USERNAME=bony
       - SPRING_DATASOURCE_PASSWORD=33rthk
     ports:
