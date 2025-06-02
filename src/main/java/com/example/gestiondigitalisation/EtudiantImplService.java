@@ -1,19 +1,20 @@
 package com.example.gestiondigitalisation;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
-public class EtudiantService {
+public class EtudiantImplService implements EtudiantService {
 
     private final EtudiantRepository etudiantRepository;
 

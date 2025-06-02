@@ -12,16 +12,14 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/etudiants")
 @RequiredArgsConstructor
 public class EtudiantController {
     @Valid
+
     private final EtudiantService etudiantService;
 
     @GetMapping("{id}")
@@ -115,8 +113,13 @@ public class EtudiantController {
         Double etudiantMax = etudiant.stream().map(etudiant1 -> Double.parseDouble(etudiant1.getMoyenne())).toList()
                 .stream().reduce(0.0,Double::max);
 
-        Double etudiantMin = etudiant.stream().map(etudiant1 -> Double.parseDouble(etudiant1.getMoyenne())).toList()
+        Double etudiantMin = etudiant.stream().map( etudiant1 -> Double.parseDouble(etudiant1.getMoyenne())).toList()
                 .stream().reduce(Double.parseDouble(etudiant.get(0).getMoyenne()),Double::min);
+
+        List<Long> etudiantSort = etudiant.stream()
+                .map(Etudiant::getNumEt)
+                .sorted(Comparator.reverseOrder())
+                .toList();
 
         response.put("moyenneMinimale",etudiantMin);
         response.put("moyenneMaximale",etudiantMax);
