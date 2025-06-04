@@ -2,6 +2,8 @@ package com.example.gestiondigitalisation;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +18,14 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/etudiants")
-@RequiredArgsConstructor
 public class EtudiantController {
     @Valid
 
     private final EtudiantService etudiantService;
+
+    public EtudiantController( EtudiantService etudiantService) {
+        this.etudiantService = etudiantService;
+    }
 
     @GetMapping("{id}")
     public  ResponseEntity<Map<String,Object>> getEtudiantById(@PathVariable Long id) {
@@ -42,7 +47,7 @@ public class EtudiantController {
             @RequestParam(required = false) String moyenne,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size,
-            @RequestParam(required = false,defaultValue = "numEt,DESC") String [] sort
+            @RequestParam(required = false,defaultValue = "numEt,ASC") String [] sort
     ) {
         List<Sort.Order> orders = new ArrayList<Sort.Order>();
         if(sort[0].contains(",")){
@@ -89,8 +94,7 @@ public class EtudiantController {
             }
             etudiantMap.put("numEt",etudiant.getNumEt());
             etudiantMap.put("nom", etudiant.getNom());
-            etudiantMap.put("moyenne",etudiant.getMoyenne());
-            etudiantMap.put("obs", obs);
+            etudiantMap.put("moyenne",Float.parseFloat(etudiant.getMoyenne()));
             results.add(etudiantMap);
 
         });

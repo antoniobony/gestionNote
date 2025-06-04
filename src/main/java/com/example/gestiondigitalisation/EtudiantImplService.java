@@ -5,11 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -55,16 +59,15 @@ public class EtudiantImplService implements EtudiantService {
     }
 
     public Etudiant updateEtudiant(EtudiantDto etudiant,Long id) {
-        Etudiant etudiant1 = Etudiant.builder().
-                nom(etudiant.getNom()).
-                moyenne(etudiant.getMoyenne()).build();
-
-        if(etudiantRepository.findById(id).isEmpty()) {
-            throw new IllegalArgumentException("Le numEt " + id + " n'existe pas ");
-        } else if (etudiantRepository.findByNomAndNumEtIsNot(etudiant1.getNom(),etudiant1.getNumEt()).isPresent()) {
-            throw new IllegalArgumentException("Le nom " + etudiant1.getNom() + " existe déjà ");
-        }
-        return etudiantRepository.save(etudiant1);
+        return etudiantRepository.findById(id).map(st -> {
+            Optional<Etudiant> etudiantOptional = etudiantRepository.findByNomAndNumEtIsNot(etudiant.getNom(),id);
+            if (etudiantOptional.isPresent()) {
+                throw new IllegalArgumentException("Le nom " + etudiant.getNom() + " existe déjà ");
+            }
+            st.setNom(etudiant.getNom());
+            st.setMoyenne(etudiant.getMoyenne());
+            return etudiantRepository.save(st);
+        }).orElseThrow(() -> new IllegalArgumentException("Le numEt " + id + " n'existe pas "));
     }
 
     public Map<String,String> deleteEtudiantById(Long id) {
